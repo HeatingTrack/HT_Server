@@ -6,9 +6,11 @@ import schoolproject.capstone.model.value.Domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Getter
+@Table(name = "user")
 public class User extends BaseEntity {
 
     @Column(name = "email")
@@ -27,10 +29,10 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public static User signUp(String email, String password) {
-        return User.builder()
-                .email(email)
-                .password(password)
-                .build();
-    }
+//    public static User signUp(String email, String password) {
+//        return User.builder()
+//                .email(email)
+//                .password(password)
+//                .build();
+//    }
 }
