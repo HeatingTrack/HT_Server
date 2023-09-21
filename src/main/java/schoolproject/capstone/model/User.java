@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User extends BaseEntity {
 
-    @Column(name = "email")
+    @Column(name = "email", updatable = false)
     private String email;
 
     private String password;

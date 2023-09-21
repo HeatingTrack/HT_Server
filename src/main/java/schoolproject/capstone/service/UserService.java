@@ -3,7 +3,7 @@ package schoolproject.capstone.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import schoolproject.capstone.dto.request.SignUpDto;
+import schoolproject.capstone.dto.request.UserDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
 
@@ -15,10 +15,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void signUp(SignUpDto signUpDto) {
+    public void signUp(UserDto userDto) {
         User user = User.builder()
-                .email(signUpDto.getEmail())
-                .password(signUpDto.getPassword())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
                 .build();
 
         userRepository.save(user);
