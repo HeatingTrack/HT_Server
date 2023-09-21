@@ -1,4 +1,4 @@
-package schoolproject.capstone.dto;
+package schoolproject.capstone.dto.request;
 
 import lombok.Getter;
 
