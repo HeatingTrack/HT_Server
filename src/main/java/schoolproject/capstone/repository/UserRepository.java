@@ -6,5 +6,5 @@ import schoolproject.capstone.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-
+    public User findByEmail(String email);
 }

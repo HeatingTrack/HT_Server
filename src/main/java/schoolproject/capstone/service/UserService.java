@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDto;
+import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
 
@@ -22,5 +23,16 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+    }
+
+    public UserLoginResponseDto login(UserDto userDto) {
+        User findUser = userRepository.findByEmail(userDto.getEmail());
+
+        if (findUser.getPassword().equals(userDto.getPassword())) {
+            UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto(findUser.getId(), findUser.getEmail());
+            return userLoginResponseDto;
+        } else {
+            throw new IllegalStateException("아이디와 비밀번호를 확인해주세요");
+        }
     }
 }
