@@ -32,7 +32,7 @@ public class UserService {
             UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto(findUser.getId(), findUser.getEmail());
             return userLoginResponseDto;
         } else {
-            throw new IllegalStateException("아이디와 비밀번호를 확인해주세요");
+            throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
         }
     }
 }
