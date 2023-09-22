@@ -3,6 +3,7 @@ package schoolproject.capstone.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
@@ -45,6 +46,18 @@ public class UserService {
             return new UserDuplicateResponseDto(1, "가입 가능한 이메일입니다.");
         } else {
             return new UserDuplicateResponseDto(0, "이미 가입된 이메일입니다.");
+        }
+    }
+
+    @Transactional
+    public void deleteUser(UserDeleteRequestDto userDeleteRequestDto) {
+        User findUser = userRepository.findById(userDeleteRequestDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("아이디에 해당되는 회원이 존재하지 않음"));
+
+        if (userDeleteRequestDto.getPassword().equals(findUser.getPassword())) {
+            userRepository.deleteById(findUser.getId());
+        } else {
+            throw new IllegalStateException("비밀번호가 일치하지 않음");
         }
     }
 }
