@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDto;
+import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
@@ -36,6 +37,14 @@ public class UserService {
             return userLoginResponseDto;
         } else {
             throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
+        }
+    }
+
+    public UserDuplicateResponseDto emailDuplicate(String email) {
+        if (userRepository.findByEmail(email).isEmpty()) {
+            return new UserDuplicateResponseDto(1, "가입 가능한 이메일입니다.");
+        } else {
+            return new UserDuplicateResponseDto(0, "이미 가입된 이메일입니다.");
         }
     }
 }
