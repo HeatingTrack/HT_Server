@@ -25,7 +25,6 @@ public class UserController {
 
     @GetMapping("/user/duplicate/{email}")
     public UserDuplicateResponseDto UserEmailDuplicate(@PathVariable("email") String email) {
-        System.out.println("email = " + email);
         return userService.emailDuplicate(email);
     }
 }
