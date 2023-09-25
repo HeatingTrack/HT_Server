@@ -10,8 +10,6 @@ import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -26,7 +24,11 @@ public class UserService {
                 .password(userDto.getPassword())
                 .build();
 
-        userRepository.save(user);
+        if (userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
+            userRepository.save(user);
+        } else {
+            throw new IllegalStateException("이미 가입되어있는 회원입니다.");
+        }
     }
 
     public UserLoginResponseDto login(UserDto userDto) {
@@ -34,8 +36,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("이메일이 달라요"));
 
         if (findUser.getPassword().equals(userDto.getPassword())) {
-            UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto(findUser.getId(), findUser.getEmail());
-            return userLoginResponseDto;
+            return new UserLoginResponseDto(findUser.getId(), findUser.getEmail());
         } else {
             throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
         }
