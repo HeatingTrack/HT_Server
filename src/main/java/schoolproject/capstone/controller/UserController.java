@@ -2,6 +2,7 @@ package schoolproject.capstone.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
@@ -24,7 +25,12 @@ public class UserController {
     }
 
     @GetMapping("/user/duplicate/{email}")
-    public UserDuplicateResponseDto UserEmailDuplicate(@PathVariable("email") String email) {
+    public UserDuplicateResponseDto userEmailDuplicate(@PathVariable("email") String email) {
         return userService.emailDuplicate(email);
+    }
+
+    @DeleteMapping("/user/delete")
+    public void userDelete(@RequestBody UserDeleteRequestDto userDeleteRequestDto) {
+        userService.deleteUser(userDeleteRequestDto);
     }
 }
