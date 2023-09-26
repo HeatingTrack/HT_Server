@@ -36,7 +36,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("이메일이 달라요"));
 
         if (findUser.getPassword().equals(userDto.getPassword())) {
-            return new UserLoginResponseDto(findUser.getId(), findUser.getEmail());
+            return new UserLoginResponseDto(findUser.getId(), findUser.getEmail(), findUser.getPassword());
         } else {
             throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
         }
