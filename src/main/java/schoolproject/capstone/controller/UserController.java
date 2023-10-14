@@ -10,26 +10,27 @@ import schoolproject.capstone.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/user/signup")
+    @PostMapping("/signup")
     public void signUp(@RequestBody UserDto userDto) {
         userService.signUp(userDto);
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public UserLoginResponseDto login(@RequestBody UserDto userDto) {
         return userService.login(userDto);
     }
 
-    @GetMapping("/user/duplicate/{email}")
+    @GetMapping("/duplicate/{email}")
     public UserDuplicateResponseDto userEmailDuplicate(@PathVariable("email") String email) {
         return userService.emailDuplicate(email);
     }
 
-    @DeleteMapping("/user/delete")
+    @DeleteMapping("/delete")
     public void userDelete(@RequestBody UserDeleteRequestDto userDeleteRequestDto) {
         userService.deleteUser(userDeleteRequestDto);
     }
