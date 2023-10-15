@@ -5,9 +5,9 @@ import lombok.Getter;
 import org.springframework.data.domain.Persistable;
 import schoolproject.capstone.model.value.Domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,11 +17,17 @@ public class User extends BaseEntity implements Persistable<String> {
     @Column(name = "email", updatable = false)
     private String email;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "phone")
     private String phone;
+
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
 
     protected User() {
         super(Domain.USER);
@@ -40,11 +46,4 @@ public class User extends BaseEntity implements Persistable<String> {
     public boolean isNew() {
         return getCreatedAt() == null;
     }
-
-//    public static User signUp(String email, String password) {
-//        return User.builder()
-//                .email(email)
-//                .password(password)
-//                .build();
-//    }
 }
