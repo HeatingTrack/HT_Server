@@ -19,15 +19,21 @@ public class User extends BaseEntity implements Persistable<String> {
 
     private String password;
 
+    private String name;
+
+    private String phone;
+
     protected User() {
         super(Domain.USER);
     }
 
     @Builder
-    protected User(String email, String password) {
+    protected User(String email, String password, String name, String phone) {
         this();
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.phone = phone;
     }
 
     @Override
