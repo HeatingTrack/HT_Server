@@ -1,37 +1,47 @@
 package schoolproject.capstone.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
-import schoolproject.capstone.dto.request.UserDto;
+import schoolproject.capstone.dto.request.UserSignupRequestDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
+import schoolproject.capstone.dto.response.UserSignupResponseDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(UserDto userDto) {
+    public UserSignupResponseDto signUp(UserSignupRequestDto userSignupRequestDto) {
         User user = User.builder()
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
+                .email(userSignupRequestDto.getEmail())
+                .password(passwordEncoder.encode(userSignupRequestDto.getPassword()))
+                .name(userSignupRequestDto.getName())
+                .phone(userSignupRequestDto.getPhone())
                 .build();
 
-        if (userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
+        if (userRepository.findByEmail(userSignupRequestDto.getEmail()).isEmpty()) {
             userRepository.save(user);
+            log.info("회원가입 완료 user : " + user.getEmail());
+            return new UserSignupResponseDto(user.getId(), user.getEmail(), user.getName());
         } else {
-            throw new IllegalStateException("이미 가입되어있는 회원입니다.");
+            log.info("회원가입 실패 user : " + user.getEmail());
+            return new UserSignupResponseDto("이미 가입된 이메일입니다.", user.getEmail(), user.getName());
         }
     }
 
-    public UserLoginResponseDto login(UserDto userDto) {
+    public UserLoginResponseDto login(UserSignupRequestDto userDto) {
         User findUser = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("이메일이 달라요"));
 
