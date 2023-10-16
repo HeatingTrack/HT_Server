@@ -3,10 +3,14 @@ package schoolproject.capstone.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
-import schoolproject.capstone.dto.request.UserDto;
+import schoolproject.capstone.dto.request.UserLoginRequestDto;
+import schoolproject.capstone.dto.request.UserSignupRequestDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
+import schoolproject.capstone.dto.response.UserSignupResponseDto;
 import schoolproject.capstone.service.UserService;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,13 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public void signUp(@RequestBody UserDto userDto) {
-        userService.signUp(userDto);
+    public UserSignupResponseDto signUp(@RequestBody UserSignupRequestDto userSignupRequestDto) {
+        return userService.signUp(userSignupRequestDto);
     }
 
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserDto userDto) {
-        return userService.login(userDto);
+    public Optional<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+        return userService.login(userLoginRequestDto);
     }
 
     @GetMapping("/duplicate/{email}")
