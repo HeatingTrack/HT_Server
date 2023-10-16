@@ -6,12 +6,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
+import schoolproject.capstone.dto.request.UserLoginRequestDto;
 import schoolproject.capstone.dto.request.UserSignupRequestDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.dto.response.UserSignupResponseDto;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +44,20 @@ public class UserService {
         }
     }
 
-    public UserLoginResponseDto login(UserSignupRequestDto userDto) {
-        User findUser = userRepository.findByEmail(userDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("이메일이 달라요"));
+    public Optional<UserLoginResponseDto> login(UserLoginRequestDto userLoginRequestDto) {
+        Optional<User> findUser = userRepository.findByEmail(userLoginRequestDto.getEmail());
 
-        if (findUser.getPassword().equals(userDto.getPassword())) {
-            return new UserLoginResponseDto(findUser.getId(), findUser.getEmail(), findUser.getPassword());
+        if (findUser.isEmpty()) {
+            log.info("해당하는 이메일이 서버에 존재하지 않음");
+            return Optional.empty();
+        }
+
+        if (passwordEncoder.matches(userLoginRequestDto.getPassword(), findUser.get().getPassword())) {
+            return Optional.of(new UserLoginResponseDto(findUser.get().getId(), findUser.get().getEmail()));
         } else {
-            throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
+            log.info("아이디와 비밀번호가 잘못 입력됨");
+            return Optional.empty();
+//            throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
         }
     }
 
