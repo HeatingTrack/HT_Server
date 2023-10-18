@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserLoginRequestDto;
 import schoolproject.capstone.dto.request.UserSignupRequestDto;
+import schoolproject.capstone.dto.response.UserDeleteResponseDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.dto.response.UserSignupResponseDto;
@@ -53,11 +54,10 @@ public class UserService {
         }
 
         if (passwordEncoder.matches(userLoginRequestDto.getPassword(), findUser.get().getPassword())) {
-            return Optional.of(new UserLoginResponseDto(findUser.get().getId(), findUser.get().getEmail()));
+            return Optional.of(new UserLoginResponseDto(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getName(), findUser.get().getPhone()));
         } else {
             log.info("아이디와 비밀번호가 잘못 입력됨");
             return Optional.empty();
-//            throw new IllegalArgumentException("아이디와 비밀번호를 확인해주세요");
         }
     }
 
@@ -70,14 +70,27 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(UserDeleteRequestDto userDeleteRequestDto) {
-        User findUser = userRepository.findById(userDeleteRequestDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("아이디에 해당되는 회원이 존재하지 않음"));
+    public Optional<UserDeleteResponseDto> deleteUser(UserDeleteRequestDto userDeleteRequestDto) {
 
-        if (userDeleteRequestDto.getPassword().equals(findUser.getPassword())) {
-            userRepository.deleteById(findUser.getId());
-        } else {
-            throw new IllegalStateException("비밀번호가 일치하지 않음");
+        Optional<User> optionalUser = userRepository.findById(userDeleteRequestDto.getId());
+
+        if (optionalUser.isEmpty()) {
+            log.info("아이디에 해당하는 회원이 존재하지 않습니다.");
+            log.info("아이디 : " + userDeleteRequestDto.getId());
+            return Optional.of(new UserDeleteResponseDto(0, "회원탈퇴에 실패하였습니다."));
         }
+
+        User findUser = optionalUser.get();
+
+        if (passwordEncoder.matches(userDeleteRequestDto.getPassword(), findUser.getPassword())) {
+            userRepository.deleteById(findUser.getId());
+            log.info("회원탈퇴 성공 : " + findUser.getEmail());
+            return Optional.of(new UserDeleteResponseDto(1, "회원탈퇴가 성공하였습니다."));
+        } else {
+            log.info("비밀번호가 일치하지 않습니다.");
+            log.info("탈퇴 시도 아이디 : " + findUser.getId());
+            return Optional.of(new UserDeleteResponseDto(0, "회원탈퇴에 실패하였습니다."));
+        }
+
     }
 }
