@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserLoginRequestDto;
 import schoolproject.capstone.dto.request.UserSignupRequestDto;
+import schoolproject.capstone.dto.response.UserDeleteResponseDto;
 import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
 import schoolproject.capstone.dto.response.UserLoginResponseDto;
 import schoolproject.capstone.dto.response.UserSignupResponseDto;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public void userDelete(@RequestBody UserDeleteRequestDto userDeleteRequestDto) {
-        userService.deleteUser(userDeleteRequestDto);
+    public Optional<UserDeleteResponseDto> userDelete(@RequestBody UserDeleteRequestDto userDeleteRequestDto) {
+        return userService.deleteUser(userDeleteRequestDto);
     }
 }
