@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class UserDeleteResponseDto {
-    private int status;
+    private int state;
     private String message;
 
-    public UserDeleteResponseDto(int status, String message) {
-        this.status = status;
+    public UserDeleteResponseDto(int state, String message) {
+        this.state = state;
         this.message = message;
     }
 }
