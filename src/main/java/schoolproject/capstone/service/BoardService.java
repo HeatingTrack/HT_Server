@@ -53,6 +53,7 @@ public class BoardService {
         return boardRepository.findAllBoardList(pageable);
     }
 
+    @Transactional
     public BoardUpdateResponseDto boardUpdate(BoardUpdateRequestDto boardUpdateRequestDto) {
 
         Optional<Board> OptionalBoard = boardRepository.findById(boardUpdateRequestDto.getId());
