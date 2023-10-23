@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import schoolproject.capstone.dto.request.BoardDeleteRequestDto;
 import schoolproject.capstone.dto.request.BoardUpdateRequestDto;
 import schoolproject.capstone.dto.request.BoardWriteRequestDto;
+import schoolproject.capstone.dto.response.BoardDeleteResponseDto;
 import schoolproject.capstone.dto.response.BoardListResponseDto;
 import schoolproject.capstone.dto.response.BoardUpdateResponseDto;
 import schoolproject.capstone.dto.response.BoardWriteResponseDto;
@@ -56,23 +58,44 @@ public class BoardService {
     @Transactional
     public BoardUpdateResponseDto boardUpdate(BoardUpdateRequestDto boardUpdateRequestDto) {
 
-        Optional<Board> OptionalBoard = boardRepository.findById(boardUpdateRequestDto.getId());
+        Optional<Board> optionalBoard = boardRepository.findById(boardUpdateRequestDto.getId());
 
-        if (OptionalBoard.isEmpty()) {
+        if (optionalBoard.isEmpty()) {
             log.info("not search board id");
             return new BoardUpdateResponseDto(0, "해당하는 게시글의 아이디가 존재하지 않습니다");
         }
 
-        if (!OptionalBoard.get().getUser().getId().equals(boardUpdateRequestDto.getUser_id())) {
+        if (!optionalBoard.get().getUser().getId().equals(boardUpdateRequestDto.getUser_id())) {
             log.info("this board not write : " + boardUpdateRequestDto.getUser_id());
-            return new BoardUpdateResponseDto(0, "해당사용자가 작성한 게시글이 아닙니다.");
+            return new BoardUpdateResponseDto(0, "해당 사용자가 작성한 게시글이 아닙니다.");
         }
 
-        Board findBoard = OptionalBoard.get();
+        Board findBoard = optionalBoard.get();
 
         findBoard.update(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent());
         log.info("fix success : " + findBoard.getId());
         return new BoardUpdateResponseDto(1, "수정이 완료되었습니다. " + findBoard.getId());
 
+    }
+
+    @Transactional
+    public BoardDeleteResponseDto boardDelete(BoardDeleteRequestDto boardDeleteRequestDto) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardDeleteRequestDto.getId());
+
+        if (optionalBoard.isEmpty()) {
+            log.info("exist not board id : " + boardDeleteRequestDto.getId());
+            return new BoardDeleteResponseDto(0, "id에 해당하는 게시물이 존재하지 않습니다.");
+        }
+
+        Board findBoard = optionalBoard.get();
+
+        if (!boardDeleteRequestDto.getUser_id().equals(findBoard.getUser().getId())) {
+            log.info("this board not write : " + boardDeleteRequestDto.getUser_id());
+            return new BoardDeleteResponseDto(0, "해당 사용자가 작성한 게시글이 아닙니다.");
+        } else {
+            log.info("delete board : " + findBoard.getId());
+            boardRepository.deleteById(boardDeleteRequestDto.getId());
+            return new BoardDeleteResponseDto(1, "게시글이 정상적으로 삭제되었습니다.");
+        }
     }
 }
