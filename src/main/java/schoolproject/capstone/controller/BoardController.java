@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import schoolproject.capstone.dto.request.BoardUpdateRequestDto;
 import schoolproject.capstone.dto.request.BoardWriteRequestDto;
 import schoolproject.capstone.dto.response.BoardListResponseDto;
+import schoolproject.capstone.dto.response.BoardUpdateResponseDto;
 import schoolproject.capstone.dto.response.BoardWriteResponseDto;
 import schoolproject.capstone.service.BoardService;
 
@@ -20,6 +22,11 @@ public class BoardController {
     @PostMapping("/write")
     public BoardWriteResponseDto boardWrite(@RequestBody BoardWriteRequestDto boardWriteRequestDto) {
         return boardService.boardWrite(boardWriteRequestDto);
+    }
+
+    @PostMapping("/update")
+    public BoardUpdateResponseDto boardUpdate(@RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+        return boardService.boardUpdate(boardUpdateRequestDto);
     }
 
     @GetMapping("/list")

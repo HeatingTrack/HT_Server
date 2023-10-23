@@ -39,6 +39,11 @@ public class Board extends BaseEntity implements Persistable<String> {
         this.user = user;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     @Override
     public boolean isNew() {
         return getCreatedAt() == null;
