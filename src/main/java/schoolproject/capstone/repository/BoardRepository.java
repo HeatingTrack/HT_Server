@@ -10,4 +10,7 @@ import schoolproject.capstone.model.Board;
 public interface BoardRepository extends JpaRepository<Board, String> {
     @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.createdAt) from Board b join b.user u")
     Page<BoardListResponseDto> findAllBoardList(Pageable pageable);
+
+    @Query("select MAX(b.num) from Board b")
+    Long createNum();
 }
