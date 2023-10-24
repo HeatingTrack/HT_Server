@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.BoardDeleteRequestDto;
 import schoolproject.capstone.dto.request.BoardUpdateRequestDto;
 import schoolproject.capstone.dto.request.BoardWriteRequestDto;
-import schoolproject.capstone.dto.response.BoardDeleteResponseDto;
-import schoolproject.capstone.dto.response.BoardListResponseDto;
-import schoolproject.capstone.dto.response.BoardUpdateResponseDto;
-import schoolproject.capstone.dto.response.BoardWriteResponseDto;
+import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.service.BoardService;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +33,11 @@ public class BoardController {
     @GetMapping("/list")
     public Page<BoardListResponseDto> boardList(@PageableDefault(size = 10, sort = "num", direction = Sort.Direction.DESC) Pageable pageable) {
         return boardService.boardList(pageable);
+    }
+
+    @GetMapping("/{num}")
+    public Optional<BoardDetailResponseDto> boardDetail(@PathVariable("num") Long num) {
+        return boardService.boardDetail(num);
     }
 
     @DeleteMapping("/delete")
