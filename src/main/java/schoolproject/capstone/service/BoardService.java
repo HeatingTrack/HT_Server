@@ -9,10 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.BoardDeleteRequestDto;
 import schoolproject.capstone.dto.request.BoardUpdateRequestDto;
 import schoolproject.capstone.dto.request.BoardWriteRequestDto;
-import schoolproject.capstone.dto.response.BoardDeleteResponseDto;
-import schoolproject.capstone.dto.response.BoardListResponseDto;
-import schoolproject.capstone.dto.response.BoardUpdateResponseDto;
-import schoolproject.capstone.dto.response.BoardWriteResponseDto;
+import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.model.Board;
 import schoolproject.capstone.repository.BoardRepository;
 import schoolproject.capstone.repository.UserRepository;
@@ -31,16 +28,7 @@ public class BoardService {
     @Transactional
     public BoardWriteResponseDto boardWrite(BoardWriteRequestDto boardWriteRequestDto) {
 
-        Long num = boardRepository.createNum();
-
-        if (num == null) {
-            num = 1L;
-        } else {
-            num++;
-        }
-
         Board board = Board.builder()
-                .num(num)
                 .title(boardWriteRequestDto.getTitle())
                 .content(boardWriteRequestDto.getContent())
                 .user(userRepository.findById(boardWriteRequestDto.getUserId()).get())
@@ -96,6 +84,17 @@ public class BoardService {
             log.info("delete board : " + findBoard.getId());
             boardRepository.deleteById(boardDeleteRequestDto.getId());
             return new BoardDeleteResponseDto(1, "게시글이 정상적으로 삭제되었습니다.");
+        }
+    }
+
+    public Optional<BoardDetailResponseDto> boardDetail(Long num) {
+        Optional<BoardDetailResponseDto> findBoardDetail = boardRepository.findDetailBoard(num);
+
+        if (findBoardDetail.isEmpty()) {
+            log.info("not found board num");
+            return Optional.empty();
+        } else {
+            return findBoardDetail;
         }
     }
 }

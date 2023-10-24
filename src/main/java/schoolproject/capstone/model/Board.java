@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "board")
 public class Board extends BaseEntity implements Persistable<String> {
 
-    @Column(name = "num")
+    @Column(name = "num", unique = true, updatable = false)
     private Long num;
 
     @Column(name = "title")
@@ -31,9 +31,8 @@ public class Board extends BaseEntity implements Persistable<String> {
     }
 
     @Builder
-    protected Board(Long num, String title, String content, User user) {
+    protected Board(String title, String content, User user) {
         this();
-        this.num = num;
         this.title = title;
         this.content = content;
         this.user = user;
