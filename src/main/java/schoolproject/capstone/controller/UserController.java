@@ -5,10 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserLoginRequestDto;
 import schoolproject.capstone.dto.request.UserSignupRequestDto;
-import schoolproject.capstone.dto.response.UserDeleteResponseDto;
-import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
-import schoolproject.capstone.dto.response.UserLoginResponseDto;
-import schoolproject.capstone.dto.response.UserSignupResponseDto;
+import schoolproject.capstone.dto.request.UserUpdateRequestDto;
+import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.service.UserService;
 
 import java.util.Optional;
@@ -30,8 +28,14 @@ public class UserController {
         return userService.login(userLoginRequestDto);
     }
 
+    @PostMapping("/update")
+    public Optional<UserUpdateResponseDto> update(@RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        return userService.update(userUpdateRequestDto);
+    }
+
     @GetMapping("/duplicate/{email}")
     public UserDuplicateResponseDto userEmailDuplicate(@PathVariable("email") String email) {
+
         return userService.emailDuplicate(email);
     }
 

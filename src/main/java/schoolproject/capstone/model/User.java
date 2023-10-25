@@ -42,6 +42,11 @@ public class User extends BaseEntity implements Persistable<String> {
         this.phone = phone;
     }
 
+    public void updateUser(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
     @Override
     public boolean isNew() {
         return getCreatedAt() == null;

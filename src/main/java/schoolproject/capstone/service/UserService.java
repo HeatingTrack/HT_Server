@@ -8,10 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.UserDeleteRequestDto;
 import schoolproject.capstone.dto.request.UserLoginRequestDto;
 import schoolproject.capstone.dto.request.UserSignupRequestDto;
-import schoolproject.capstone.dto.response.UserDeleteResponseDto;
-import schoolproject.capstone.dto.response.UserDuplicateResponseDto;
-import schoolproject.capstone.dto.response.UserLoginResponseDto;
-import schoolproject.capstone.dto.response.UserSignupResponseDto;
+import schoolproject.capstone.dto.request.UserUpdateRequestDto;
+import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
 
@@ -90,6 +88,30 @@ public class UserService {
             log.info("비밀번호가 일치하지 않습니다.");
             log.info("탈퇴 시도 아이디 : " + findUser.getId());
             return Optional.of(new UserDeleteResponseDto(0, "회원탈퇴에 실패하였습니다."));
+        }
+
+    }
+
+    @Transactional
+    public Optional<UserUpdateResponseDto> update(UserUpdateRequestDto userUpdateRequestDto) {
+
+        Optional<User> optionalUser = userRepository.findById(userUpdateRequestDto.getId());
+        if (optionalUser.isEmpty()) {
+            log.info("not founded user by id : " + userUpdateRequestDto.getId());
+            return Optional.of(new UserUpdateResponseDto(0, "아이디에 해당하는 회원이 존재하지 않습니다."));
+        } else {
+            User findUser = optionalUser.get();
+
+            if (passwordEncoder.matches(userUpdateRequestDto.getPassword(), findUser.getPassword())) {
+                findUser.updateUser(userUpdateRequestDto.getName(), userUpdateRequestDto.getPhone());
+
+                log.info("change success user profile");
+                return Optional.of(new UserUpdateResponseDto(1, "회원정보 수정이 완료되었습니다."));
+            } else {
+                log.info("not matched password");
+                return Optional.of(new UserUpdateResponseDto(0, "비밀번호가 다릅니다."));
+            }
+
         }
 
     }
