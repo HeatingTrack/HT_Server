@@ -29,6 +29,9 @@ public class User extends BaseEntity implements Persistable<String> {
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
+
     protected User() {
         super(Domain.USER);
     }
