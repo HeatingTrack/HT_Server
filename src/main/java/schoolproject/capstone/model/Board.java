@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import schoolproject.capstone.model.value.Domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +27,9 @@ public class Board extends BaseEntity implements Persistable<String> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "board")
+    private List<Comment> comments = new ArrayList<>();
 
     protected Board() {
         super(Domain.BOARD);
