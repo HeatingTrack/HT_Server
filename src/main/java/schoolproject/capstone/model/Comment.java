@@ -3,13 +3,13 @@ package schoolproject.capstone.model;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.util.Lazy;
 import schoolproject.capstone.model.value.Domain;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "comment")
 public class Comment extends BaseEntity implements Persistable<String> {
 
     @Column(name = "comment")
