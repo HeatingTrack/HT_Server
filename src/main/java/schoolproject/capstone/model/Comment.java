@@ -35,6 +35,10 @@ public class Comment extends BaseEntity implements Persistable<String> {
         this.board = board;
     }
 
+    public void modify(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public boolean isNew() {
         return getCreatedAt() == null;
