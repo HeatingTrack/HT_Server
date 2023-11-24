@@ -2,6 +2,7 @@ package schoolproject.capstone.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
 import schoolproject.capstone.model.Board;
@@ -15,11 +16,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Optional<ResponseMessageDto> write(CommentRequestWriteDto commentRequestWriteDto) {
         Optional<Board> optionalBoard = boardRepository.findById(commentRequestWriteDto.getBoard_id());
         Optional<User> optionalUser = userRepository.findById(commentRequestWriteDto.getUser_id());
@@ -46,6 +49,5 @@ public class CommentService {
 
         commentRepository.save(comment);
         return Optional.of(new ResponseMessageDto(1, "댓글 작성이 성공하였습니다."));
-
     }
 }
