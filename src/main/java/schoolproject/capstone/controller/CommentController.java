@@ -1,15 +1,15 @@
 package schoolproject.capstone.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
+import schoolproject.capstone.dto.response.CommentResponseDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
 import schoolproject.capstone.service.CommentService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,5 +26,15 @@ public class CommentController {
     @PostMapping("/modify")
     public Optional<ResponseMessageDto> modifyComment(@RequestBody CommentModifyRequestDto commentModifyRequestDto) {
         return commentService.modify(commentModifyRequestDto);
+    }
+
+    @DeleteMapping("/delete")
+    public Optional<ResponseMessageDto> deleteComment(@RequestBody CommentDeleteRequestDto commentDeleteRequestDto) {
+        return commentService.delete(commentDeleteRequestDto);
+    }
+
+    @GetMapping("/list/{board_id}")
+    public List<CommentResponseDto> getCommentList(@PathVariable("board_id") String boardId) {
+        return commentService.getComments(boardId);
     }
 }
