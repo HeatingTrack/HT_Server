@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
-import schoolproject.capstone.dto.request.CommentRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
 import schoolproject.capstone.dto.response.CommentResponseDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
@@ -88,7 +87,8 @@ public class CommentService {
         return Optional.of(new ResponseMessageDto(1, "댓글 삭제가 완료되었습니다."));
     }
 
-    public List<CommentResponseDto> getComments(CommentRequestDto commentRequestDto) {
-        return commentRepository.comments(commentRequestDto.getBoard_id());
+    public List<CommentResponseDto> getComments(String boardId) {
+        return commentRepository.comments(boardId);
     }
+
 }

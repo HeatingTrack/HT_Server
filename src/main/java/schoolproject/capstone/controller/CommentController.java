@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
-import schoolproject.capstone.dto.request.CommentRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
 import schoolproject.capstone.dto.response.CommentResponseDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
@@ -34,8 +33,8 @@ public class CommentController {
         return commentService.delete(commentDeleteRequestDto);
     }
 
-    @GetMapping("/list")
-    public List<CommentResponseDto> getCommentList(@RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.getComments(commentRequestDto);
+    @GetMapping("/list/{board_id}")
+    public List<CommentResponseDto> getCommentList(@PathVariable("board_id") String boardId) {
+        return commentService.getComments(boardId);
     }
 }
