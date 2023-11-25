@@ -3,7 +3,6 @@ package schoolproject.capstone.model;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.repository.Query;
 import schoolproject.capstone.model.value.Domain;
 
 import javax.persistence.*;
@@ -17,6 +16,9 @@ public class Board extends BaseEntity implements Persistable<String> {
 
     @Column(name = "num", unique = true, updatable = false)
     private Long num;
+
+    @Column(name = "type")
+    private int type;
 
     @Column(name = "title")
     private String title;
@@ -36,11 +38,12 @@ public class Board extends BaseEntity implements Persistable<String> {
     }
 
     @Builder
-    protected Board(String title, String content, User user) {
+    protected Board(String title, int type, String content, User user) {
         this();
         this.title = title;
         this.content = content;
         this.user = user;
+        this.type = type;
     }
 
     public void update(String title, String content) {
