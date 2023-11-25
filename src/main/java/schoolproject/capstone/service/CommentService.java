@@ -3,6 +3,7 @@ package schoolproject.capstone.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
@@ -67,5 +68,20 @@ public class CommentService {
 
         comment.modify(commentModifyRequestDto.getComment());
         return Optional.of(new ResponseMessageDto(1, "댓글 수정이 완료되었습니다."));
+    }
+
+    @Transactional
+    public Optional<ResponseMessageDto> delete(CommentDeleteRequestDto commentDeleteRequestDto) {
+        Optional<Comment> optionalComment = commentRepository.findById(commentDeleteRequestDto.getComment_id());
+        if (optionalComment.isEmpty()) {
+            return Optional.of(new ResponseMessageDto(0, "아이디에 해당하는 댓글이 존재하지 않습니다."));
+        }
+        Comment comment = optionalComment.get();
+
+        if (!comment.getUser().getId().equals(commentDeleteRequestDto.getUser_id())) {
+            return Optional.of(new ResponseMessageDto(0, "댓글 삭제는 댓글 작성자만 가능합니다."));
+        }
+        commentRepository.deleteById(commentDeleteRequestDto.getComment_id());
+        return Optional.of(new ResponseMessageDto(1, "댓글 삭제가 완료되었습니다."));
     }
 }
