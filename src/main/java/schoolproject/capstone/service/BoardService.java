@@ -43,6 +43,10 @@ public class BoardService {
         return boardRepository.findAllBoardList(pageable);
     }
 
+//    public Page<BoardListResponseDto> boardListFindByUserName(String name, Pageable pageable) {
+//        return boardRepository.findAllBoardUser(name, pageable);
+//    }
+
     @Transactional
     public BoardUpdateResponseDto boardUpdate(BoardUpdateRequestDto boardUpdateRequestDto) {
 
