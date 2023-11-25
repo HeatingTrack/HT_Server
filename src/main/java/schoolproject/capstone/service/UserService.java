@@ -52,7 +52,7 @@ public class UserService {
         }
 
         if (passwordEncoder.matches(userLoginRequestDto.getPassword(), findUser.get().getPassword())) {
-            return Optional.of(new UserLoginResponseDto(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getName(), findUser.get().getPhone()));
+            return Optional.of(new UserLoginResponseDto(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getName(), findUser.get().getPhone(), findUser.get().getType()));
         } else {
             log.info("아이디와 비밀번호가 잘못 입력됨");
             return Optional.empty();

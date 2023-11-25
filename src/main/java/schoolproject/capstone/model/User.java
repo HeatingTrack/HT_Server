@@ -17,6 +17,9 @@ public class User extends BaseEntity implements Persistable<String> {
     @Column(name = "email", updatable = false)
     private String email;
 
+    @Column(name = "type")
+    private int type = 0;
+
     @Column(name = "password")
     private String password;
 
