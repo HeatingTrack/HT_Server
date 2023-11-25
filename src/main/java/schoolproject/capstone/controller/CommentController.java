@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
+import schoolproject.capstone.dto.request.CommentRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
+import schoolproject.capstone.dto.response.CommentResponseDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
 import schoolproject.capstone.service.CommentService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,5 +32,10 @@ public class CommentController {
     @DeleteMapping("/delete")
     public Optional<ResponseMessageDto> deleteComment(@RequestBody CommentDeleteRequestDto commentDeleteRequestDto) {
         return commentService.delete(commentDeleteRequestDto);
+    }
+
+    @GetMapping("/list")
+    public List<CommentResponseDto> getCommentList(@RequestBody CommentRequestDto commentRequestDto) {
+        return commentService.getComments(commentRequestDto);
     }
 }

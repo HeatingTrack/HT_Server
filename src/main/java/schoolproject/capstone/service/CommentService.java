@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import schoolproject.capstone.dto.request.CommentDeleteRequestDto;
 import schoolproject.capstone.dto.request.CommentModifyRequestDto;
+import schoolproject.capstone.dto.request.CommentRequestDto;
 import schoolproject.capstone.dto.request.CommentRequestWriteDto;
+import schoolproject.capstone.dto.response.CommentResponseDto;
 import schoolproject.capstone.dto.response.ResponseMessageDto;
 import schoolproject.capstone.model.Board;
 import schoolproject.capstone.model.Comment;
@@ -14,6 +16,7 @@ import schoolproject.capstone.repository.BoardRepository;
 import schoolproject.capstone.repository.CommentRepository;
 import schoolproject.capstone.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,5 +86,9 @@ public class CommentService {
         }
         commentRepository.deleteById(commentDeleteRequestDto.getComment_id());
         return Optional.of(new ResponseMessageDto(1, "댓글 삭제가 완료되었습니다."));
+    }
+
+    public List<CommentResponseDto> getComments(CommentRequestDto commentRequestDto) {
+        return commentRepository.comments(commentRequestDto.getBoard_id());
     }
 }
