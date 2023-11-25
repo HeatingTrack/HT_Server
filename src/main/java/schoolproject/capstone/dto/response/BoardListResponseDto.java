@@ -9,14 +9,12 @@ public class BoardListResponseDto {
     private Long num;
     private String title;
     private String userName;
-    private int type;
     private LocalDateTime createdAt;
 
-    public BoardListResponseDto(Long num, String title, String userName, int type, LocalDateTime createdAt) {
+    public BoardListResponseDto(Long num, String title, String userName, LocalDateTime createdAt) {
         this.num = num;
         this.title = title;
         this.userName = userName;
-        this.type = type;
         this.createdAt = createdAt;
     }
 }
