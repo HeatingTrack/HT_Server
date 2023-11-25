@@ -31,6 +31,7 @@ public class BoardService {
         Board board = Board.builder()
                 .title(boardWriteRequestDto.getTitle())
                 .content(boardWriteRequestDto.getContent())
+                .type(boardWriteRequestDto.getType())
                 .user(userRepository.findById(boardWriteRequestDto.getUserId()).get())
                 .build();
 
