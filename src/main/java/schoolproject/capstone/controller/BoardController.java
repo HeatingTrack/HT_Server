@@ -35,6 +35,12 @@ public class BoardController {
         return boardService.boardList(pageable);
     }
 
+    @GetMapping("/list/{name}")
+    public Page<BoardListResponseDto> boardListFindByUserName(@PathVariable("name") String name,
+                                                              @PageableDefault(size = 10, sort = "num", direction = Sort.Direction.DESC) Pageable pageable) {
+        return boardService.boardListFindByUserName(name, pageable);
+    }
+
     @GetMapping("/{num}")
     public Optional<BoardDetailResponseDto> boardDetail(@PathVariable("num") Long num) {
         return boardService.boardDetail(num);
