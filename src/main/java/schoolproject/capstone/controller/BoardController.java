@@ -35,6 +35,11 @@ public class BoardController {
         return boardService.boardList(pageable);
     }
 
+    @GetMapping("/cast-list")
+    public Page<BoardListResponseDto> castList(@PageableDefault(size = 10, sort = "num", direction = Sort.Direction.DESC) Pageable pageable) {
+        return boardService.findAllBoardCastList(pageable);
+    }
+
     @GetMapping("/list/{name}")
     public Page<BoardListResponseDto> boardListFindByUserName(@PathVariable("name") String name,
                                                               @PageableDefault(size = 10, sort = "num", direction = Sort.Direction.DESC) Pageable pageable) {

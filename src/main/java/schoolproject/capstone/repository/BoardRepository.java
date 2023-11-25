@@ -12,11 +12,14 @@ import schoolproject.capstone.model.Board;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, String> {
-    @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.type, b.createdAt) from Board b join b.user u")
+    @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.createdAt) from Board b join b.user u where b.type = 0")
     Page<BoardListResponseDto> findAllBoardList(Pageable pageable);
 
-    @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.type, b.createdAt) from Board b join b.user u where u.name = :name")
+    @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.createdAt) from Board b join b.user u where u.name = :name and b.type = 0")
     Page<BoardListResponseDto> findAllBoardUser(@Param("name") String name, Pageable pageable);
+
+    @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.createdAt) from Board b join b.user u where b.type = 1")
+    Page<BoardListResponseDto> findAllBoardCastList(Pageable pageable);
 
     @Query("select new schoolproject.capstone.dto.response.BoardDetailResponseDto(b.id, b.title, b.content, b.createdAt, u.name, u.id) from Board b join b.user u where b.num = :num")
     Optional<BoardDetailResponseDto> findDetailBoard(@Param("num") Long num);
