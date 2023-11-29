@@ -21,6 +21,6 @@ public interface BoardRepository extends JpaRepository<Board, String> {
     @Query("select new schoolproject.capstone.dto.response.BoardListResponseDto(b.num, b.title, u.name, b.createdAt) from Board b join b.user u where b.type = 1")
     Page<BoardListResponseDto> findAllBoardCastList(Pageable pageable);
 
-    @Query("select new schoolproject.capstone.dto.response.BoardDetailResponseDto(b.id, b.title, b.content, b.createdAt, u.name, u.id) from Board b join b.user u where b.num = :num")
+    @Query("select new schoolproject.capstone.dto.response.BoardDetailResponseDto(b.id, b.title, b.content, b.createdAt, u.name, u.id, b.type) from Board b join b.user u where b.num = :num")
     Optional<BoardDetailResponseDto> findDetailBoard(@Param("num") Long num);
 }
