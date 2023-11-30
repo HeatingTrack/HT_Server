@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import schoolproject.capstone.dto.request.UserDeleteRequestDto;
-import schoolproject.capstone.dto.request.UserLoginRequestDto;
-import schoolproject.capstone.dto.request.UserSignupRequestDto;
-import schoolproject.capstone.dto.request.UserUpdateRequestDto;
+import schoolproject.capstone.dto.request.*;
 import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.model.User;
 import schoolproject.capstone.repository.UserRepository;
@@ -114,5 +111,22 @@ public class UserService {
 
         }
 
+    }
+
+    @Transactional
+    public Optional<ResponseMessageDto> passwdChange(PasswordChangeRequestDto passwordChangeRequestDto) {
+        Optional<User> findUser = userRepository.findById(passwordChangeRequestDto.getUser_id());
+        if (findUser.isEmpty()) {
+            return Optional.of(new ResponseMessageDto(0, "아이디에 해당하는 회원이 존재하지 않습니다."));
+        }
+
+        User user = findUser.get();
+
+        if (!passwordEncoder.matches(passwordChangeRequestDto.getPasswd(), user.getPassword())) {
+            return Optional.of(new ResponseMessageDto(0, "현재 비밀번호가 일치하지 않습니다."));
+        }
+
+        user.changePassword(passwordEncoder.encode(passwordChangeRequestDto.getNew_passwd())); //비밀번호 변경
+        return Optional.of(new ResponseMessageDto(1, "비밀번호 변경이 완료되었습니다."));
     }
 }
