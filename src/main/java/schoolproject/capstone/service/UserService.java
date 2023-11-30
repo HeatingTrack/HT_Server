@@ -115,7 +115,7 @@ public class UserService {
 
     @Transactional
     public Optional<ResponseMessageDto> passwdChange(PasswordChangeRequestDto passwordChangeRequestDto) {
-        Optional<User> findUser = userRepository.findById(passwordChangeRequestDto.getUser_id());
+        Optional<User> findUser = userRepository.findById(passwordChangeRequestDto.getId());
         if (findUser.isEmpty()) {
             return Optional.of(new ResponseMessageDto(0, "아이디에 해당하는 회원이 존재하지 않습니다."));
         }
