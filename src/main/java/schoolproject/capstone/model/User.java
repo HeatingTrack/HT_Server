@@ -53,6 +53,10 @@ public class User extends BaseEntity implements Persistable<String> {
         this.phone = phone;
     }
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean isNew() {
         return getCreatedAt() == null;

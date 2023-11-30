@@ -2,10 +2,7 @@ package schoolproject.capstone.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import schoolproject.capstone.dto.request.UserDeleteRequestDto;
-import schoolproject.capstone.dto.request.UserLoginRequestDto;
-import schoolproject.capstone.dto.request.UserSignupRequestDto;
-import schoolproject.capstone.dto.request.UserUpdateRequestDto;
+import schoolproject.capstone.dto.request.*;
 import schoolproject.capstone.dto.response.*;
 import schoolproject.capstone.service.UserService;
 
@@ -26,6 +23,11 @@ public class UserController {
     @PostMapping("/login")
     public Optional<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         return userService.login(userLoginRequestDto);
+    }
+
+    @PostMapping("passwd-change")
+    public Optional<ResponseMessageDto> passwdChange(@RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
+        return userService.passwdChange(passwordChangeRequestDto);
     }
 
     @PostMapping("/update")
